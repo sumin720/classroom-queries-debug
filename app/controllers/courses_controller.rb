@@ -14,33 +14,32 @@ class CoursesController < ApplicationController
 
   def create
     @course = Course.new
-    @course.title = params.fetch("query_title")
-    @course.term_offered = params.fetch("query_term_offered")
-    @course.department_id = params.fetch("query_department_id")
-
-    if @course.valid?
-      @course.save
-      redirect_to("/courses", { :notice => "Course created successfully." })
+    @course.title = params.fetch("query_title", nil)
+    @course.term_offered = params.fetch("query_term_offered", nil)
+    @course.department_id = params.fetch("query_department_id", nil)
+  
+    if @course.save
+      redirect_to("/courses", { notice: "Course created successfully." })
     else
-      redirect_to("/courses", { :notice => "Course failed to create successfully." })
+      redirect_to("/courses", { alert: "Failed to create course." })
     end
   end
-
+  
   def update
     id = params.fetch("path_id")
-    @course = Course.where({ :id => the_id }).at(0)
-
-    @course.title = params.fetch("query_title")
-    @course.term_offered = params.fetch("query_term_offered")
-    @course.department_id = params.fetch("query_department_id")
-
-    if @course.valid?
-      @course.save
-      redirect_to("/courses/#{@course.id}", { :notice => "Course updated successfully."} )
+    @course = Course.find(id)
+  
+    @course.title = params.fetch("query_title", nil)
+    @course.term_offered = params.fetch("query_term_offered", nil)
+    @course.department_id = params.fetch("query_department_id", nil)
+  
+    if @course.save
+      redirect_to("/courses/#{@course.id}", { notice: "Course updated successfully." })
     else
-      redirect_to("/courses/#{@course.id}", { :alert => "Course failed to update successfully." })
+      redirect_to("/courses/#{@course.id}", { alert: "Course failed to update successfully." })
     end
   end
+  
 
   def destroy
     the_id = params.fetch("path_id")

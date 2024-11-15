@@ -52,9 +52,8 @@
 <hr>
 
 <h2>Courses</h2>
-<% courses = Course.where({ :department_id => @department.name }) %>
 <ul>
-  <% courses.each do |course| %>
+  <% Course.where(department_id: @department.id).each do |course| %>
     <li>
       <a href="/courses/<%= course.id %>"><%= course.title %></a>
     </li>
