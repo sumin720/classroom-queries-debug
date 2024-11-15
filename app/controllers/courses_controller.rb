@@ -43,11 +43,15 @@ class CoursesController < ApplicationController
   end
 
   def destroy
-    the_id = params.fetch("path")
-    @course = Course.where({ :id => the_id }).at(0)
+    the_id = params.fetch("path_id")
+    @course = Course.find(the_id)
 
     @course.destroy
+    redirect_to("/courses", { notice: "Course deleted successfully." })
+  end
 
-    redirect_to("/courses", { :notice => "Course deleted successfully."} )
-end
+  private
+  def course_params
+    params.require(:course).permit(:title, :term_offered, :department)
+  end
 end
